@@ -1,0 +1,119 @@
+{
+  "name": "nest-template",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start -b swc",
+    "start:dev": "nest start -b swc --watch",
+    "start:debug": "nest start -b swc --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "generate:controller": "nest g co",
+    "generate:service": "nest g s",
+    "generate:module": "nest g module",
+    "generate:class": "nest g class",
+    "generate:filter": "nest g filter",
+    "generate:guard": "nest g guard",
+    "generate:interceptor": "nest g interceptor",
+    "generate:pipe": "nest g pipe",
+    "generate:middleware": "nest g middleware",
+    "migration:generate": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:generate -d src/data-source.ts",
+    "migration:run": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:run -d src/data-source.ts",
+    "migration:revert": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:revert -d src/data-source.ts"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.9.1",
+    "@hapi/joi": "^17.1.1",
+    "@nestjs/apollo": "^12.0.7",
+    "@nestjs/common": "^10.1.3",
+    "@nestjs/config": "^3.0.0",
+    "@nestjs/core": "^10.1.3",
+    "@nestjs/graphql": "^12.0.8",
+    "@nestjs/mapped-types": "^2.0.2",
+    "@nestjs/platform-express": "^10.1.3",
+    "@nestjs/swagger": "^7.1.8",
+    "@nestjs/typeorm": "^10.0.0",
+    "apollo-server-express": "^3.10.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "elastic-apm-node": "^3.49.1",
+    "graphql": "^16.7.1",
+    "pg": "^8.11.2",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^5.0.1",
+    "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.0",
+    "typeorm": "^0.3.17"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.1.11",
+    "@nestjs/schematics": "^10.0.2",
+    "@nestjs/testing": "^10.1.3",
+    "@swc/cli": "^0.1.62",
+    "@swc/core": "^1.3.76",
+    "@types/express": "^4.17.17",
+    "@types/hapi__joi": "^17.1.9",
+    "@types/jest": "29.5.3",
+    "@types/node": "^20.5.0",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
+    "chokidar": "^3.5.3",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "jest": "29.6.2",
+    "lint-staged": "^14.0.0",
+    "prettier": "^3.0.1",
+    "source-map-support": "^0.5.21",
+    "supertest": "^6.3.3",
+    "ts-jest": "29.1.1",
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "^5.1.6"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/../src/$1"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "yarn format"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "packageManager": "yarn@3.6.1"
+}

@@ -1,0 +1,61 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Which release version?"
+        required: true
+
+      aks:
+        description: "Target AKS"
+        type: choice
+        required: true
+        options:
+          - dev
+          - preprod
+          - production
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: "${{ github.event.inputs.tag }}"
+      - name: "Login via Azure CLI"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set up kubelogin for non-interactive login
+        run: |
+          curl -LO https://github.com/Azure/kubelogin/releases/download/v0.0.20/kubelogin-linux-amd64.zip
+          sudo unzip -j kubelogin-linux-amd64.zip -d /usr/local/bin
+          rm -f kubelogin-linux-amd64.zip
+          kubelogin --version
+
+      - name: Set the target AKS cluster
+        uses: Azure/aks-set-context@v3
+        with:
+          creds: "${{ secrets.AZURE_CREDENTIALS }}"
+          cluster-name: aks-flowlity-${{ github.event.inputs.aks }}
+          resource-group: rg-flowlity-${{ github.event.inputs.aks }}
+          admin: "false"
+          use-kubelogin: "true"
+
+      - uses: azure/setup-helm@v1
+        with:
+          version: "3.3.4" # default is latest stable
+        id: install
+
+      - name: K8s deployment
+        run: |
+          helm upgrade --wait --timeout=1200s --install \
+            --values k8s/values-${{ github.event.inputs.aks }}.yaml \
+            --set image.tag=${{ github.event.inputs.tag }} \
+            template k8s

@@ -1,0 +1,15 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""coffees"""
+type Coffee {
+  brand: String!
+  id: ID!
+  name: String!
+  recommendations: Float!
+}
+
+type Query {
+  getAll: [Coffee!]!
+}

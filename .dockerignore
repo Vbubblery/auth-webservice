@@ -1,0 +1,4 @@
+dist/
+k8s/
+.env
+.env.*
